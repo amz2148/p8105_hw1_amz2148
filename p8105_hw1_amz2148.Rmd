@@ -9,10 +9,16 @@ date: "2022-09-24"
 Here we load the `penguins` dataset.
 
 ```{r}
+knitr::opts_chunk$set(echo = TRUE)
 data("penguins", package = "palmerpenguins")
 ```
 
+In the `penguins` dataset, the names of key variables are ``r names(penguins)``. As indicated by the `summary(penguins)` function run below, in this dataset there are 3 categories of species: Adelie (152 penguins), Chinstrap (68 penguins), and Gentoo (124 penguins); there are 3 categories of island: Biscoe (168 penguins), Dream (124 penguins), and Torgersen (52 penguins). Mean bill length is 43.92mm, mean bill depth is 17.15mm, mean flipper length is 200.9mm, and mean body mass is 4202g. There are 165 female and 168 male penguins. Years range from 2007-2008, with a mean year of 2008. The dataset has ``r nrow(penguins)`` rows (observations) and ``r ncol(penguins)`` columns (variables).
 
+```{r}
+summary(penguins)
+```
 
 # Problem 2
+
 
