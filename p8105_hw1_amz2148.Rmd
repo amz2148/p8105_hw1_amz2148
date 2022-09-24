@@ -6,14 +6,15 @@ date: "2022-09-24"
 
 # Problem 1
 
-Here we load the `penguins` dataset.
+First we load the `penguins` dataset.
 
 ```{r dataset_loading} 
 knitr::opts_chunk$set(echo = TRUE) #shows all code chunks
+library(tidyverse) #loads tidyverse package
 data("penguins", package = "palmerpenguins") #loads dataset
 ```
 
-In the `penguins` dataset, the names of key variables are ``r names(penguins)``. As indicated by the `summary(penguins)` function run below, in this dataset there are 3 categories of species: Adelie (152 penguins), Chinstrap (68 penguins), and Gentoo (124 penguins); there are 3 categories of island: Biscoe (168 penguins), Dream (124 penguins), and Torgersen (52 penguins); and there are 165 female and 168 male penguins. Mean bill length is ``r round(mean(penguins$bill_length_mm, na.rm = TRUE), 2)``mm, mean bill depth is ``r round(mean(penguins$bill_depth_mm, na.rm = TRUE), 2)``mm, mean flipper length is ``r round(mean(penguins$flipper_length_mm, na.rm = TRUE), 1)``mm, and mean body mass is ``r round(mean(penguins$body_mass_g, na.rm = TRUE), 0)``g. Years range from ``r round(min(penguins$year, na.rm = TRUE), 0)`` to ``r round(max(penguins$year, na.rm = TRUE), 0)``, with a mean year of ``r round(mean(penguins$year, na.rm = TRUE), 0)``. The dataset has ``r nrow(penguins)`` rows (observations) and ``r ncol(penguins)`` columns (variables).
+In the `penguins` dataset, the names of key variables are ``r names(penguins)``. As indicated by the `summary(penguins)` function run below, in this dataset there are 3 categories of species: ``r unique(penguins$species)`` with 152, 124, and 68 penguins each respectively; there are 3 categories of island: ``r unique(penguins$island)`` with 52, 124, and 168 penguins respectively; and there are 2 categories of sex: ``r unique(penguins$sex)`` with 165 female, 168 male, and 11 NA penguins. Mean bill length is ``r round(mean(penguins$bill_length_mm, na.rm = TRUE), 2)``mm, mean bill depth is ``r round(mean(penguins$bill_depth_mm, na.rm = TRUE), 2)``mm, mean flipper length is ``r round(mean(penguins$flipper_length_mm, na.rm = TRUE), 1)``mm, and mean body mass is ``r round(mean(penguins$body_mass_g, na.rm = TRUE), 0)``g. Years range from ``r round(min(penguins$year, na.rm = TRUE), 0)`` to ``r round(max(penguins$year, na.rm = TRUE), 0)``, with a mean year of ``r round(mean(penguins$year, na.rm = TRUE), 0)``. The dataset has ``r nrow(penguins)`` rows (observations) and ``r ncol(penguins)`` columns (variables).
 
 ```{r summary_stats}
 summary(penguins) #provides summary of variable names and values
@@ -22,7 +23,6 @@ summary(penguins) #provides summary of variable names and values
 Below is a scatterplot of flipper length in mm (y) vs. bill length in mm (x), with observations colorcoded by species. This scatterplot is created using the `ggplot()` function through the `tidyverse` package.
 
 ```{r scatterplot}
-library(tidyverse) #loads tidyverse package
 ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm,col=species)) + geom_point() #creates colorcoded scatterplot
 ```
 
@@ -35,5 +35,24 @@ ggsave("p8105_hw1p1_amz2148.pdf", height = 4, width = 6) #export scatterplot
 
 # Problem 2
 
+First we create a data frame with various specifications:
 
+* a random sample of size 10 from a standard Normal distribution
+* a logical vector indicating whether elements of the sample are greater than 0
+* a character vector of length 10
+* a factor vector of length 10, with 3 different factor “levels”
+
+```{r dataframe}
+example_df = tibble(
+  random_norm = rnorm(10),
+  random_pos = random_norm > 0,
+  vec_char = c("a", "b", "c", "d", "e", "f", "g", "h", "i", "j"),
+  vec_factor = factor(c("small", "small", "small", "medium", "medium", "medium", "large", "large", "large", "small"))
+)
+```
+
+When attempting to take the mean of these variables using the ``pull`` function, only the random sample and logical variables result in numeric means (these two are seen below).
+
+The mean of the `random_norm` variable is ``r mean(pull(example_df, random_norm))``.
+The mean of the `random_pos` logical variable is ``r mean(pull(example_df, random_pos))``.
 
