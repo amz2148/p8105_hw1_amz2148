@@ -8,17 +8,32 @@ date: "2022-09-24"
 
 Here we load the `penguins` dataset.
 
-```{r}
-knitr::opts_chunk$set(echo = TRUE)
-data("penguins", package = "palmerpenguins")
+```{r dataset_loading} 
+knitr::opts_chunk$set(echo = TRUE) #shows all code chunks
+data("penguins", package = "palmerpenguins") #loads dataset
 ```
 
-In the `penguins` dataset, the names of key variables are ``r names(penguins)``. As indicated by the `summary(penguins)` function run below, in this dataset there are 3 categories of species: Adelie (152 penguins), Chinstrap (68 penguins), and Gentoo (124 penguins); there are 3 categories of island: Biscoe (168 penguins), Dream (124 penguins), and Torgersen (52 penguins). Mean bill length is 43.92mm, mean bill depth is 17.15mm, mean flipper length is 200.9mm, and mean body mass is 4202g. There are 165 female and 168 male penguins. Years range from 2007-2008, with a mean year of 2008. The dataset has ``r nrow(penguins)`` rows (observations) and ``r ncol(penguins)`` columns (variables).
+In the `penguins` dataset, the names of key variables are ``r names(penguins)``. As indicated by the `summary(penguins)` function run below, in this dataset there are 3 categories of species: Adelie (152 penguins), Chinstrap (68 penguins), and Gentoo (124 penguins); there are 3 categories of island: Biscoe (168 penguins), Dream (124 penguins), and Torgersen (52 penguins); and there are 165 female and 168 male penguins. Mean bill length is ``r round(mean(penguins$bill_length_mm, na.rm = TRUE), 2)``mm, mean bill depth is ``r round(mean(penguins$bill_depth_mm, na.rm = TRUE), 2)``mm, mean flipper length is ``r round(mean(penguins$flipper_length_mm, na.rm = TRUE), 1)``mm, and mean body mass is ``r round(mean(penguins$body_mass_g, na.rm = TRUE), 0)``g. Years range from ``r round(min(penguins$year, na.rm = TRUE), 0)`` to ``r round(max(penguins$year, na.rm = TRUE), 0)``, with a mean year of ``r round(mean(penguins$year, na.rm = TRUE), 0)``. The dataset has ``r nrow(penguins)`` rows (observations) and ``r ncol(penguins)`` columns (variables).
 
-```{r}
-summary(penguins)
+```{r summary_stats}
+summary(penguins) #provides summary of variable names and values
+```
+
+Below is a scatterplot of flipper length in mm (y) vs. bill length in mm (x), with observations colorcoded by species. This scatterplot is created using the `ggplot()` function through the `tidyverse` package.
+
+```{r scatterplot}
+library(tidyverse) #loads tidyverse package
+ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm,col=species)) + geom_point() #creates colorcoded scatterplot
+```
+
+Finally, we set the working directory and export the scatterplot above.
+
+```{r export}
+setwd("~/Documents/Columbia University/Fall 2022/Data Science/Homeworks/Homework1/p8105_hw1_amz2148") #set working directory
+ggsave("p8105_hw1p1_amz2148.pdf", height = 4, width = 6) #export scatterplot
 ```
 
 # Problem 2
+
 
 
