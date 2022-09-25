@@ -11,10 +11,11 @@ First we load the `penguins` dataset.
 ```{r dataset_loading} 
 knitr::opts_chunk$set(echo = TRUE) #shows all code chunks
 library(tidyverse) #loads tidyverse package
+library(plyr) #loads plyr package
 data("penguins", package = "palmerpenguins") #loads dataset
 ```
 
-In the `penguins` dataset, the names of key variables are ``r names(penguins)``. As indicated by the `summary(penguins)` function run below, in this dataset there are 3 categories of species: ``r unique(penguins$species)`` with 152, 124, and 68 penguins each respectively; there are 3 categories of island: ``r unique(penguins$island)`` with 52, 124, and 168 penguins respectively; and there are 2 categories of sex: ``r unique(penguins$sex)`` with 165 female, 168 male, and 11 NA penguins. Mean bill length is ``r round(mean(penguins$bill_length_mm, na.rm = TRUE), 2)``mm, mean bill depth is ``r round(mean(penguins$bill_depth_mm, na.rm = TRUE), 2)``mm, mean flipper length is ``r round(mean(penguins$flipper_length_mm, na.rm = TRUE), 1)``mm, and mean body mass is ``r round(mean(penguins$body_mass_g, na.rm = TRUE), 0)``g. Years range from ``r round(min(penguins$year, na.rm = TRUE), 0)`` to ``r round(max(penguins$year, na.rm = TRUE), 0)``, with a mean year of ``r round(mean(penguins$year, na.rm = TRUE), 0)``. The dataset has ``r nrow(penguins)`` rows (observations) and ``r ncol(penguins)`` columns (variables).
+In the `penguins` dataset, the names of key variables are ``r names(penguins)``. As indicated by the `summary(penguins)` function run below, in this dataset there are 3 categories of species: ``r count(penguins$species)[1:3,1]`` with ``r count(penguins$species)[1:3,2]`` penguins each respectively; there are 3 categories of island: ``r count(penguins$island)[1:3,1]`` with ``r count(penguins$island)[1:3,2]`` penguins respectively; and there are 2 categories of sex: ``r count(penguins$sex)[1:3,1]`` with ``r count(penguins$sex)[1:3,2]`` penguins respectively. Mean bill length is ``r round(mean(penguins$bill_length_mm, na.rm = TRUE), 2)``mm, mean bill depth is ``r round(mean(penguins$bill_depth_mm, na.rm = TRUE), 2)``mm, mean flipper length is ``r round(mean(penguins$flipper_length_mm, na.rm = TRUE), 1)``mm, and mean body mass is ``r round(mean(penguins$body_mass_g, na.rm = TRUE), 0)``g. Years range from ``r round(min(penguins$year, na.rm = TRUE), 0)`` to ``r round(max(penguins$year, na.rm = TRUE), 0)``, with a mean year of ``r round(mean(penguins$year, na.rm = TRUE), 0)``. The dataset has ``r nrow(penguins)`` rows (observations) and ``r ncol(penguins)`` columns (variables).
 
 ```{r summary_stats}
 summary(penguins) #provides summary of variable names and values
@@ -43,7 +44,7 @@ First we create a data frame with various specifications:
 * a factor vector of length 10, with 3 different factor “levels”
 
 ```{r dataframe}
-example_df = tibble(
+p2_df = tibble(
   random_norm = rnorm(10),
   random_pos = random_norm > 0,
   vec_char = c("a", "b", "c", "d", "e", "f", "g", "h", "i", "j"),
@@ -51,8 +52,20 @@ example_df = tibble(
 )
 ```
 
-When attempting to take the mean of these variables using the ``pull`` function, only the random sample and logical variables result in numeric means (these two are seen below).
+When attempting to take the mean of these variables using the ``pull`` and ``mean`` functions, only the random sample and logical variables result in numeric means (these two are seen below). The other two variables are not numeric and therefore means cannot be calculated. 
 
-The mean of the `random_norm` variable is ``r mean(pull(example_df, random_norm))``.
-The mean of the `random_pos` logical variable is ``r mean(pull(example_df, random_pos))``.
+The mean of the `random_norm` variable is ``r mean(pull(p2_df, random_norm))``.
+The mean of the `random_pos` logical variable is ``r mean(pull(p2_df, random_pos))``.
+
+Below is a code chunk that applies the ``as.numeric`` function to the logical, character, and factor variables. 
+
+```{r as_numeric, eval = FALSE}
+as.numeric(p2_df$random_pos)
+as.numeric(p2_df$vec_char)
+as.numeric(p2_df$vec_factor)
+```
+
+When running this code, the logical and factor variables can be treated as numeric variables, which allow one to calculate a mean. But the character variable cannot be treated as a numeric variable, which explains why a mean can still not be calculated even with the ``as.numeric`` function.
+
+
 
